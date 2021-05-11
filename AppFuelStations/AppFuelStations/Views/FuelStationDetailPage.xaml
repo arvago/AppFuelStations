@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFuelStations.Views.FuelStationDetailPage"
+             xmlns:converters="clr-namespace:AppFuelStations.Converters"
+             xmlns:triggers="clr-namespace:AppFuelStations.Triggers"
+             Title="Detalle de Gasolineras">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ImageConverter x:Key="ImageConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Eliminar" Command="{Binding DeleteCommand}"/>
+        <ToolbarItem Text="Guardar" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Mapa" Command="{Binding MapCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>      
+        <ScrollView>
+            <StackLayout Margin="15">
+                <Label Text="INFORMACIÓN DE GASOLINERA" XAlign="Center" FontSize="Large"/>
+                <Entry 
+                    Placeholder="Nombre de la Gasolinera" 
+                    Text="{Binding FuelStationSelected.Name}"/>
+                <Entry 
+                    Placeholder="Marca" 
+                    Text="{Binding FuelStationSelected.Brand}"/>
+                <Label Text="IMAGEN" XAlign="Center" FontSize="Large" Margin="7,0,0,0"/>
+                <Entry 
+                    Placeholder="Imagen URL" 
+                    Text="{Binding FuelStationSelected.Picture}"/>            
+                <Image 
+                    Source="{Binding ImageBase64, Converter={StaticResource ImageConverter}}"/>
+                <Button
+                    Text="Seleccionar Fotografía"
+                    Command="{Binding SelectPictureCommand}"/>
+                <Label Text="INFORMACIÓN GASOLINA" XAlign="Center" FontSize="Large" Margin="7,0,0,0"/>
+                <Label Text="Gasolina Verde" XAlign="Start" Margin="7,0,0,0"/>
+                <Entry 
+                    Placeholder="Precio Verde" 
+                    Keyboard="Numeric" 
+                    Text="{Binding GreenPrice}">
+                    <Entry.Triggers>
+                        <EventTrigger 
+                            Event="PriceChanged">
+                            <triggers:PriceTrigger/>
+                        </EventTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Stepper
+                    Increment=".50"
+                    Minimum="0"
+                    Maximum="1000"
+                    Value="{Binding GreenPrice}"/>
+                <Label Text="Gasolina Roja" XAlign="Start" Margin="7,0,0,0"/>
+                <Entry 
+                    Placeholder="Precio Verde" 
+                    Keyboard="Numeric" 
+                    Text="{Binding RedPrice}">
+                    <Entry.Triggers>
+                        <EventTrigger 
+                            Event="PriceChanged">
+                            <triggers:PriceTrigger/>
+                        </EventTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Stepper
+                    Increment=".50"
+                    Minimum="0"
+                    Maximum="1000"
+                    Value="{Binding RedPrice}"/>
+                <Label Text="Gasolina Diesel" XAlign="Start" Margin="7,0,0,0"/>
+                <Entry 
+                    Placeholder="Precio Verde" 
+                    Keyboard="Numeric" 
+                    Text="{Binding DieselPrice}">
+                    <Entry.Triggers>
+                        <EventTrigger 
+                            Event="PriceChanged">
+                            <triggers:PriceTrigger/>
+                        </EventTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Stepper
+                    Increment=".50"
+                    Minimum="0"
+                    Maximum="1000"
+                    Value="{Binding DieselPrice}"/>
+                <Label Text="UBICACIÓN" XAlign="Center" FontSize="Large" Margin="7,0,0,0"/>
+                <Entry 
+                    Placeholder="Latitud" 
+                    Text="{Binding Latitude}"/>
+                <Entry 
+                    Placeholder="Longitud" 
+                    Text="{Binding Longitude}"/>
+                <Button
+                    Text="Obtener Ubicación"
+                    Command="{Binding GetLocationCommand}"/>
+           
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
