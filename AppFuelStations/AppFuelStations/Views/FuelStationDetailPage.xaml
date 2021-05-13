@@ -28,11 +28,10 @@
                 <Entry 
                     Placeholder="Marca" 
                     Text="{Binding FuelStationSelected.Brand}"/>
-                <Label Text="IMAGEN" XAlign="Center" FontSize="Large" Margin="7,0,0,0"/>
-                <Entry 
-                    Placeholder="Imagen URL" 
-                    Text="{Binding FuelStationSelected.Picture}"/>            
+                <Label Text="IMAGEN" XAlign="Center" FontSize="Large" Margin="7,0,0,0"/>         
                 <Image 
+                    HeightRequest="300"
+                    WidthRequest="500"
                     Source="{Binding ImageBase64, Converter={StaticResource ImageConverter}}"/>
                 <Button
                     Text="Seleccionar Fotografía"

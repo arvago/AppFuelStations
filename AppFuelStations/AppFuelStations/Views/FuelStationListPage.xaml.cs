@@ -16,7 +16,7 @@ namespace AppFuelStations.Views
         public FuelStationListPage()
         {
             InitializeComponent();
-
+            //ENVIA Y OBTIENE LOS BINDINGS DEL VIEWMODEL
             BindingContext = new FuelStationListViewModel();
         }
     }

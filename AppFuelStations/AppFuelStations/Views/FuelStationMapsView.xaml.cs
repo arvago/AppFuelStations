@@ -14,9 +14,11 @@ namespace AppFuelStations.Views
         {
             InitializeComponent();
 
+            //OBTIENE LA IMAGEN DE LA GASOLINERA SELECCIONADA PARA CONVERTIRLA DE BASE 64
             fuelStationSelected.Picture = new ImageService().SaveImageFromBase64(fuelStationSelected.Picture, fuelStationSelected.ID);
             MapFuelStations.FuelStation = fuelStationSelected;
 
+            //CENTRA EL MAPA EN LA UBICACION GUARDADA DE LA GASOLINERA
             MapFuelStations.MoveToRegion(
                 MapSpan.FromCenterAndRadius(
                     new Position(
@@ -27,6 +29,7 @@ namespace AppFuelStations.Views
                     )
                 );
 
+            //AGREGA EL PIN EN LA UBICACION GUARDADA DE LA GASOLINERA
             MapFuelStations.Pins.Add(
                 new Pin
                 {

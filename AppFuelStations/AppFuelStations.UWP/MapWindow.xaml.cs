@@ -25,6 +25,7 @@ namespace AppFuelStations.UWP
         {
             this.InitializeComponent();
 
+            //SETEA LOS VALORES MANDADOS A MOSTRAR EN EL RECUADRO
             WindowPicture.Source = new BitmapImage(new Uri(fuelStation.Picture));
             WindowName.Text = fuelStation.Name;
             WindowBrand.Text = fuelStation.Brand;

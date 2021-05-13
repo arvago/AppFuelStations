@@ -1,5 +1,5 @@
 ﻿using SQLite;
-
+//Se crea el modelo que tiene el objeto, que con MySqLite se utiliza directamente como una tabla de una BD
 namespace AppFuelStations.Models
 {
     [Table("FuelStation")]

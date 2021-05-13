@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace AppFuelStations.Triggers
 {
+    //ESTE TRIGGER NOS AYUDARA A VALIDAR LOS VALORES QUE SE INGRESAN EN NUESTROS ENTRIES
     public class PriceTrigger : TriggerAction<Entry>
     {
         protected override void Invoke(Entry sender)
@@ -19,7 +20,7 @@ namespace AppFuelStations.Triggers
             {
                 if (n < 0)
                 {
-                    sender.Text = "0";
+                    sender.Text = "0"; //Si es menor a 0 lo seteamos como 0
                 }
             }
         }

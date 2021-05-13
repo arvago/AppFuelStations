@@ -21,8 +21,9 @@ namespace AppFuelStations.UWP.Renders
         MapControl NativeMap;
         FuelStationModel FuelStation;
         MapWindow FuelStationWindow;
-        bool IsFuelStationWindowVisible = false;
+        bool IsFuelStationWindowVisible = false; //SI EL CUADRO ESTA VISIBLE
 
+        //LIMPIA LA INFORMACION QUE TENIA POR DEFECTO PARA CENTRAR EL MAPA Y EL PIN PERSONALIZADO
         protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
             base.OnElementChanged(e);
@@ -44,6 +45,7 @@ namespace AppFuelStations.UWP.Renders
                 NativeMap.Children.Clear();
                 NativeMap.MapElementClick += OnMapElementClick;
 
+                //POSICION DEL PIN
                 var position = new BasicGeoposition
                 {
                     Latitude = FuelStation.Latitude,
@@ -51,6 +53,7 @@ namespace AppFuelStations.UWP.Renders
                 };
                 var point = new Geopoint(position);
 
+                //ATRIBUTOS DE NUESTRO MAPICON, SU FILEPATH, LOCACION, ANCHURA, ETC.
                 var mapIcon = new MapIcon();
                 mapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///pin.png"));
                 mapIcon.CollisionBehaviorDesired = MapElementCollisionBehavior.RemainVisible;
@@ -61,13 +64,15 @@ namespace AppFuelStations.UWP.Renders
             }
         }
 
+        //METODO PARA MOSTRAR EL RECUADRO CON LA INFO DE LA GASOLINERA EN EL MAPA, AL DAR CLICK AL PIN
         private void OnMapElementClick(MapControl sender, MapElementClickEventArgs args)
         {
             var mapicon = args.MapElements.FirstOrDefault(x => x is MapIcon) as MapIcon;
             if (mapicon != null)
             {
                 if (!IsFuelStationWindowVisible)
-                {
+                { 
+                    //MANDA LOS DATOS DE LA GASOLINERA AL MAPWINDOW PARA MOSTRAR EL RECUEADRO CON LA INFO
                     if (FuelStationWindow == null) FuelStationWindow = new MapWindow(FuelStation);
                     var position = new BasicGeoposition
                     {

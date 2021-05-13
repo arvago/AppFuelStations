@@ -12,6 +12,7 @@ namespace AppFuelStations.ViewModels
 {
     public class FuelStationDetailViewModel : BaseViewModel
     {
+        //INICIALIZAMOS NUESTROS COMANDOS QUE SE UTILIZARAN AL MANEJAR EL DETAIL VIEW
         Command saveCommand;
         public Command SaveCommand => saveCommand ?? (saveCommand = new Command(SaveAction));
         Command deleteCommand;
@@ -23,6 +24,7 @@ namespace AppFuelStations.ViewModels
         Command _GetLocationCommand;
         public Command GetLocationCommand => _GetLocationCommand ?? (_GetLocationCommand = new Command(GetLocationAction));
 
+        //SE CREAN LOS CONSTRUCTORES PARA PODER SETEAR LOS VALORES
         FuelStationModel fuelStationSelected;
         public FuelStationModel FuelStationSelected
         {
@@ -71,11 +73,13 @@ namespace AppFuelStations.ViewModels
             set => SetProperty(ref _DieselPrice, value);
         }
 
+        //CONSTRUCTOR QUE SE INVOCA AL QUERER CREAR UNA NUEVA GASOLINERA
         public FuelStationDetailViewModel()
         {
             FuelStationSelected = new FuelStationModel();
         }
 
+        //CONSTRUCTOR QUE SE INVOCA AL QUERER EDITAR/ACTUALIZAR LA INFO DE UNA GASOLINERA
         public FuelStationDetailViewModel(FuelStationModel fuelStationSelected)
         {
            FuelStationSelected = fuelStationSelected;
@@ -86,27 +90,27 @@ namespace AppFuelStations.ViewModels
             RedPrice = fuelStationSelected.RedPrice;
             DieselPrice = fuelStationSelected.DieselPrice;
         }
-
+        //METODO PARA GUARDAR LOS DATOS EN SQLITE
         private async void SaveAction()
         {
-            //Guardamos Gasolinera en SQLite
             fuelStationSelected.Latitude = Latitude;
             fuelStationSelected.Longitude = Longitude;
             fuelStationSelected.GreenPrice = GreenPrice;
             fuelStationSelected.RedPrice = RedPrice;
             fuelStationSelected.DieselPrice = DieselPrice;
             await App.SQLiteDatabase.SaveFuelStationAsync(fuelStationSelected);
-            FuelStationListViewModel.GetInstance().LoadFuelStations();
+            FuelStationListViewModel.GetInstance().LoadFuelStations();//LINEA PARA RECARGAR LOS DATOS GUARDADOS 
             await Application.Current.MainPage.Navigation.PopAsync();
         }
-
+        //METODO PARA ELIMINAR LOS DATOS DE SQLITE
         private async void DeleteAction()
         {
             await App.SQLiteDatabase.DeleteFuelStationAsync(fuelStationSelected);
-            FuelStationListViewModel.GetInstance().LoadFuelStations();
+            FuelStationListViewModel.GetInstance().LoadFuelStations();//LINEA PARA RECARGAR LOS DATOS GUARDADOS 
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        //METODO PARA MANDAR LOS VALORES DE LA GASOLINERA SELECCIONADA, PARA SU MUESTRA EN EL MAPA
         private void MapAction()
         {
             Application.Current.MainPage.Navigation.PushAsync(
@@ -122,12 +126,13 @@ namespace AppFuelStations.ViewModels
               );
         }
 
+        //METODO PARA SELECCIONAR UNA FOTO DEL DISPOSITIVO
         private async void SelectPictureAction()
         {
             try
             {
                 await CrossMedia.Current.Initialize();
-
+                //VALIDA LOS PERMISOS PARA SELECCIONAR FOTO
                 if (!CrossMedia.Current.IsPickPhotoSupported)
                 {
                     await Application.Current.MainPage.DisplayAlert("AppFuelStations", "No es posible seleccionar fotografías en el dispositivo", "Ok");
@@ -141,7 +146,7 @@ namespace AppFuelStations.ViewModels
 
                 if (file == null)
                     return;
-
+                //ASIGNA LA FOTO DESPUES DE CONVERTIRLA A BASE 64
                 FuelStationSelected.Picture = ImageBase64 = await new ImageService().ConvertImageFileToBase64(file.Path);
             }
             catch (Exception ex)
@@ -150,6 +155,7 @@ namespace AppFuelStations.ViewModels
             }
         }
 
+        //METODO PARA OBTENER LAS COORDENADAS DEL DISPOSITVO Y GUARDARLAS
         private async void GetLocationAction()
         {
             try
@@ -158,7 +164,7 @@ namespace AppFuelStations.ViewModels
                 var location = await Geolocation.GetLastKnownLocationAsync();
                 if (location != null)
                 {
-                    //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    //GUARDA LAS COORDENADAS EN EL MODELO, Y LAS MUESTRA EN EL DETAIL, GRACIAS AL BINDING
                     Latitude = FuelStationSelected.Latitude = location.Latitude;
                     Longitude = FuelStationSelected.Longitude = location.Longitude;
                 }
